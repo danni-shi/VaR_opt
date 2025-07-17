@@ -1,23 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def data_syn(kappa, beta, gamma, sigma, tau, trades, N, min_gap=10, seed=42):
+def data_syn(kappa, beta, gamma, sigma, tau, n_trades, N, min_gap=10, seed=42):
     rng = np.random.default_rng(seed)
 
     # sanity‐check for enough room
-    if N < min_gap*(trades-1) + trades:
+    if N < min_gap*(n_trades-1) + n_trades:
         raise ValueError(
-            f"N={N} too small for {trades=} with {min_gap=}. "
-            f"Need at least {min_gap*(trades-1)+trades} steps."
+            f"N={N} too small for {n_trades=} with {min_gap=}. "
+            f"Need at least {min_gap*(n_trades-1)+n_trades} steps."
         )
 
     # draw, sort, then offset
-    u = rng.choice(N - min_gap*(trades), trades, replace=False)
+    u = rng.choice(N - min_gap*(n_trades), n_trades, replace=False)
     u.sort()
-    pos = u + min_gap * np.arange(trades)
+    pos = u + min_gap * np.arange(n_trades)
 
     v_sim = np.zeros(N)
-    v_sim[pos] = rng.uniform(1e3, 1e5, size=trades)
+    v_sim[pos] = rng.uniform(1e3, 1e5, size=n_trades)
 
     I = np.zeros(N+1)
     S = np.zeros(N+1)

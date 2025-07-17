@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import arviz as az
 
 import os
-os.environ["GRB_LICENSE_FILE"] = "/nfs/home/colinn/gurobi.lic"
+os.environ["GRB_LICENSE_FILE"] = "/nfs/home/dannis/gurobi.lic"
 
 import gurobipy as gp
 print("Gurobi version:", gp.gurobi.version())

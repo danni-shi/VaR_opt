@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import arviz as az
 
 import os
-os.environ["GRB_LICENSE_FILE"] = "/nfs/home/colinn/gurobi.lic"
+os.environ["GRB_LICENSE_FILE"] = "/nfs/home/dannis/gurobi.lic"
 
 import gurobipy as gp
 print("Gurobi version:", gp.gurobi.version())
@@ -40,10 +40,10 @@ all_results = {}
 # -------------------------
 # Loop over each trace file
 # -------------------------
-theta_sigma_list = [8e-06, 2e-06, 0]
-alpha_a_list = [5, 8, 1e6]
+theta_sigma_list = [3e-06]
+alpha_a_list = [6, 6]
 
-for i in range(3):
+for i in range(len(theta_sigma_list)):
     theta_sigma = theta_sigma_list[i]
     alpha_a = alpha_a_list[i]
     # Prepare containers
@@ -84,9 +84,9 @@ for i in range(3):
         model.Params.Threads = 86
         model.Params.MIPGap = 0.002
         if i ==0:
-            model.Params.TimeLimit = 6000
+            model.Params.TimeLimit = 7200
         else:
-            model.Params.TimeLimit = 4800
+            model.Params.TimeLimit = 7200
         # Decision variables
         n = model.addVars(N+1, lb=0, name="n")
         b = model.addVars(m, vtype=GRB.BINARY, name="b")

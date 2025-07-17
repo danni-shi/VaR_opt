@@ -18,7 +18,7 @@ os.makedirs(outdir, exist_ok=True)
 
 trade_list = [50, 100, 250, 500, 1000]
 
-for trades in trade_list:
+for n_trades in trade_list:
     # True model parameters (to be recovered by inference)
     kappa = 1e-5   # transient impact scale
     beta  = 2.231   # decay rate
@@ -27,10 +27,10 @@ for trades in trade_list:
     tau =0.01
     min_gap = 1
     seed = 100
-    N = int(1.5* min_gap*(trades) + trades)
+    N = int(1.5* min_gap*(n_trades) + n_trades)
     print(f"Gap ={min_gap}, seed ={seed}")
-    S, v_sim = data_syn(kappa, beta, gamma, sigma, tau, trades, N, min_gap, seed)
-    print(f"Working on trades ={trades}")
+    S, v_sim = data_syn(kappa, beta, gamma, sigma, tau, n_trades, N, min_gap, seed)
+    print(f"Working on n_trades ={n_trades}")
 
     # ─── Add this at the very top, before any pytensor imports ───
     import pytensor
@@ -101,7 +101,7 @@ for trades in trade_list:
             return_inferencedata=True
         )
 
-    trace.to_netcdf(os.path.join(outdir, f"trace_{trades}_gap_{min_gap}_seed_{seed}.nc"))
+    trace.to_netcdf(os.path.join(outdir, f"trace_{n_trades}_gap_{min_gap}_seed_{seed}.nc"))
 
 end_time = time.time()
 run_time = end_time - start_time

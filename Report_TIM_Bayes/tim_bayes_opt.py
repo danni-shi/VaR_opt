@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import arviz as az
 
 import os
-os.environ["GRB_LICENSE_FILE"] = "/nfs/home/colinn/gurobi.lic"
+os.environ["GRB_LICENSE_FILE"] = "/nfs/home/dannis/gurobi.lic"
 
 import gurobipy as gp
 print("Gurobi version:", gp.gurobi.version())
@@ -17,15 +17,18 @@ import datetime
 # -------------------------
 # List of NetCDF trace files
 # -------------------------
-trace_files = ["/nfs/home/colinn/Report_AC/Report_TIM_Bayes/20250514_000825/trace_50_gap_1_seed_3.nc",
-               "/nfs/home/colinn/Report_AC/Report_TIM_Bayes/20250514_000825/trace_250_gap_1_seed_3.nc",
-               "/nfs/home/colinn/Report_AC/Report_TIM_Bayes/20250514_000825/trace_2000_gap_1_seed_3.nc"]
+trace_files = ["/nfs/home/dannis/Report_AC/Report_TIM_Bayes/20250514_000825/trace_50_gap_1_seed_3.nc",
+               "/nfs/home/dannis/Report_AC/Report_TIM_Bayes/20250514_000825/trace_250_gap_1_seed_3.nc",
+               "/nfs/home/dannis/AC-model/Report_TIM_Bayes/20250514_000825/trace_2000_gap_1_seed_3.nc"]
 
 # -------------------------
 # Parameter Setup
 # -------------------------
-N = 10               # Number of time intervals
-m = 1500             # Number of scenarios
+N = 1000               # Number of time intervals
+m = 500             # Number of scenarios
+seed = 100              # Random seed for reproducibility
+# set random seed
+np.random.seed(seed)
 X = 1e3              # Total shares to sell
 T = 1                # Trading horizon
 tau = T / N         # Interval length
@@ -36,14 +39,14 @@ sigma = 0.45         # Volatility
 delta = 0.1          # Fixed chance constraint threshold
 M = 5e3              # Big-M constant
 C_max = 1001         # IS threshold
-num_runs = 10        # Number of Monte Carlo runs per trace file
+num_runs = 1        # Number of Monte Carlo runs per trace file
 
 all_results = {}
 
 # -------------------------
 # Loop over each trace file
 # -------------------------
-for trace_file in trace_files:
+for trace_file in trace_files[-1:]:
     print(f"\nProcessing trace file: {trace_file} ")
     # Load posterior samples via ArviZ
     idata = az.from_netcdf(trace_file)
