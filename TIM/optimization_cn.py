@@ -108,6 +108,7 @@ def run_optimization(posterior_samples, noise, n_scenarios, n_data, total_qty, t
         trades = [np.nan] * (n_data + 1)
         errors["status"] = model.status
         obj_val = np.nan
+        mip_gap = np.nan
         runtime = np.nan
         tail_prob = np.nan
 
@@ -142,14 +143,16 @@ if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Run TIM optimization with Proxy Distribution')
     parser.add_argument('--outdir', type=str, 
-                       default=f"TIM_opt_results_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}", 
+                       default=f"TIM_fix_mean_results_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}", 
                        help='Output directory for results (default: TIM_opt_results_TIMESTAMP)')
-    parser.add_argument('--var_list', type=int, nargs='+', default=[1.41e-06, 27.93],
+    
+    parser.add_argument('--var_list', type=float, nargs='+', default=[1.41e-06, 27.93],
                        help='Variance for the corresponding proxy distribution')
+    
     parser.add_argument('--run_seeds', type=int, nargs='+', 
-                       default=[115], 
+                       default=[115,116,117], 
                        help='List of seeds for random number generation (default: [100, 101, 102])')
-    parser.add_argument('--n_scenarios', type=int, default=1000)
+    parser.add_argument('--n_scenarios', type=int, default=50)
     
     args = parser.parse_args()
     
@@ -157,11 +160,11 @@ if __name__ == "__main__":
     outdir = args.outdir
     var_list = args.var_list
     run_seeds = args.run_seeds
-    mcmc_timestamp = args.mcmc_timestamp
+    #mcmc_timestamp = args.mcmc_timestamp
     n_scenarios = args.n_scenarios
 
     os.makedirs(outdir, exist_ok=True)
-    mcmc_results_dir = "/nfs/home/dannis/AC-model/TIM/TIM_MCMC_Results"  # Example directory, adjust as needed
+    #mcmc_results_dir = "/nfs/home/dannis/AC-model/TIM/TIM_MCMC_Results"  # Example directory, adjust as needed
     # mcmc_timestamp = "20250620_162746"
     # trace_files = os.listdir(f'{mcmc_results_dir}/{mcmc_timestamp}')[-2:]
     n_steps = 10

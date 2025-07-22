@@ -108,6 +108,7 @@ def run_optimization(posterior_samples, noise, n_scenarios, n_data, total_qty, t
         trades = [np.nan] * (n_data + 1)
         errors["status"] = model.status
         obj_val = np.nan
+        mip_gap= np.nan
         runtime = np.nan
         tail_prob = np.nan
 
@@ -156,7 +157,7 @@ if __name__ == "__main__":
                        help='List of seeds for random number generation (default: [100, 101, 102])')
     # parser.add_argument('--mcmc_timestamp', type=str, default="20250701_134415",
     #                     help='Timestamp of the MCMC results directory')
-    parser.add_argument('--n_scenarios', type=int, default=1000)
+    parser.add_argument('--n_scenarios', type=int, default=50)
     
     args = parser.parse_args()
     

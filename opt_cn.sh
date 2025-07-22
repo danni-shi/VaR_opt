@@ -14,7 +14,7 @@ N_SCENARIOS=1000                # Example number of scenarios
 mkdir -p $OUTDIR
 
 # Call the Python script with arguments
-python3 TIM/optimization.py \
+python3 TIM/optimization_cn.py \
     --outdir $OUTDIR \
     --var_list $VAR_LIST \
     --run_seeds $RUN_SEEDS \
