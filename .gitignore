@@ -1,7 +1,9 @@
 TIM_opt_results*/
 TIM/TIM_simulated_data/
 TIM/TIM_MCMC_Results/
+TIM_MCMC_Results/
 TIM_simulated_data/
+TIM_fix_mean_results/
 /nfs/home/dannis/AC-model/Report_TIM_Bayes/20250512_180619/
 /nfs/home/dannis/AC-model/Report_TIM_Bayes/20250514_000825/
 /nfs/home/dannis/AC-model/Report_TIM_Bayes/TIM_opt_fixed_mean_results_20250519_075019/

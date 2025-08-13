@@ -179,7 +179,7 @@ def main():
     os.makedirs(datadir, exist_ok=True)
 
     # Trade list and parameters
-    trade_list = [500, 800, 1100, 1400]
+    trade_list = [2000]
 
     num_runs = 15
     params = {

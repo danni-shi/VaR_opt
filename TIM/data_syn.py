@@ -47,10 +47,11 @@ def data_syn_tim(params, sigma, tau, n_trades, N, min_gap=10, seed=42):
     dW = rng.normal(0, np.sqrt(tau), size=N)
 
     for k in range(1, N + 1):
-        I[k] = I[k - 1] + (kappa * v_sim[k - 1] - rho * I[k - 1]) * tau
+        delta_I = (kappa * v_sim[k] - rho * I[k - 1]) * tau
+        I[k] = I[k - 1] + delta_I  # forward Euler
         S[k] = (
             S[k - 1]
-            - (gamma * v_sim[k - 1] + (kappa * v_sim[k - 1] - rho * I[k - 1])) * tau
+            - (gamma * v_sim[k - 1] * tau + delta_I)
             + sigma * dW[k - 1]
         )
 

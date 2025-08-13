@@ -31,8 +31,14 @@ def sample_posteriors(trace_file, n_scenarios):
 
 ## Proxy Normal Distribution Sampling
 def sample_proxy(n_scenarios, theta_m, theta_v , alpha_a, alpha_b, rho_m=2.231, rho_v=0):
-        theta_samples = np.random.normal(theta_m, theta_v, n_scenarios)
-        alpha_samples = np.random.beta(alpha_a, alpha_b, n_scenarios) # Sample from Beta distribution or Normal Distribution?
+        if theta_v == 0.:
+            theta_samples = np.array([theta_m] * n_scenarios)
+        else:
+            theta_samples = np.random.normal(theta_m, theta_v, n_scenarios)
+        if alpha_a == 0. and alpha_b == 0.:
+            alpha_samples = np.array([0.5] * n_scenarios)
+        else:
+            alpha_samples = np.random.beta(alpha_a, alpha_b, n_scenarios) # Sample from Beta distribution or Normal Distribution?
         rho_samples = np.random.normal(rho_m, rho_v, n_scenarios)
         # Transformations to get model parameters
         posterior_samples = {
@@ -148,6 +154,7 @@ if __name__ == "__main__":
     
     parser.add_argument('--var_list', type=float, nargs='+', default=[1.41e-06, 27.93],
                        help='Variance for the corresponding proxy distribution')
+    parser.add_argument('--var_idx', type=int, default=1, help='index of variance parameters')
     
     parser.add_argument('--run_seeds', type=int, nargs='+', 
                        default=[115,116,117], 
@@ -158,7 +165,17 @@ if __name__ == "__main__":
     
     # Use the command line argument for output directory
     outdir = args.outdir
-    var_list = args.var_list
+    # var_list = args.var_list
+    if args.var_idx == 0:
+        var_list = [1.349766e-06, 4.397102] # n_trades = 250
+    elif args.var_idx == 1:
+        var_list = [7.091207e-07, 5.213667] # n_trades = 800
+    elif args.var_idx == 2:
+        var_list = [5.953597e-07, 5.379057] # n_trades = 1100
+    elif args.var_idx == 3:
+        var_list = [5.268546e-07, 6.088576] # n_trades = 1400
+    else: var_list = [0., 0.]
+
     run_seeds = args.run_seeds
     #mcmc_timestamp = args.mcmc_timestamp
     n_scenarios = args.n_scenarios
@@ -185,12 +202,13 @@ if __name__ == "__main__":
     gap = 100 #??
 
 
-    theta_v, alpha_v = var_list[0], var_list[1]
+    theta_v, alpha_ab = var_list[0], var_list[1]
     opt_timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    run_folder = os.path.join(outdir, f"theta_{theta_v}_alpha_{alpha_v}")
+    run_folder = os.path.join(outdir, f"{args.var_idx}_theta_{theta_v}_alpha_{alpha_ab}")
     os.makedirs(run_folder, exist_ok=True)
     config = {'opt_timestamp': opt_timestamp, 
                 'theta_var': theta_v, 
+                'alpha_var': alpha_ab,
                 'n_scenarios': n_scenarios, 
                 'gap': gap}
     
@@ -203,7 +221,7 @@ if __name__ == "__main__":
         # trace_file = f'trace_{n_trade}_gap_{gap}_seed_{seed}.nc'
         # print(f"\nProcessing trace file: {trace_file}")
         # posterior_samples, noise = sample_posteriors(f'{mcmc_results_dir}/{mcmc_timestamp}/{trace_file}', n_scenarios)
-        posterior_samples, noise = sample_proxy(n_scenarios, theta_m= 2e-05, theta_v =theta_v, alpha_a=alpha_v, alpha_b = alpha_v, rho_m=2.231, rho_v=0)
+        posterior_samples, noise = sample_proxy(n_scenarios, theta_m= 2e-05, theta_v =theta_v, alpha_a=alpha_ab, alpha_b = alpha_ab, rho_m=2.231, rho_v=0)
         
 
         print(f"Seed Number: {seed}")
@@ -212,6 +230,6 @@ if __name__ == "__main__":
         )
         print(f"Optimization Status: {results['status']}")
         # Save results for this run
-        results_file = os.path.join(run_folder, f"opt_{theta_v}.pkl")
+        results_file = os.path.join(run_folder, f"opt_{theta_v}_{seed}.pkl")
         with open(results_file, "wb") as f:
             pickle.dump(results, f)
