@@ -1,6 +1,29 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+def step(v_k, i_prev, kappa, rho, tau):
+    return i_prev + (kappa * v_k - rho * i_prev) * tau
+
+def fn_dI(v_k, i_prev, kappa, rho, tau):
+    """
+    Computes the change in impact state given the current volume, previous impact state,
+    and model parameters.
+    
+    Parameters:
+    - v_k: Current trade volume.
+    - i_prev: Previous impact state.
+    - kappa: Sensitivity of impact to trade volume.
+    - rho: Decay rate of impact.
+    - tau: Time step.
+    
+    Returns:
+    - Change in impact state.
+    """
+    return (kappa * v_k - rho * i_prev) * tau
+
+def fn_dS(gamma, v, tau, dI):
+    return -(gamma * v * tau + dI)
+
 def data_syn_tim(params, sigma, tau, n_trades, N, min_gap=10, seed=42):
     """
     Simulates trading data based on the given parameters.
@@ -39,23 +62,26 @@ def data_syn_tim(params, sigma, tau, n_trades, N, min_gap=10, seed=42):
     v_sim = np.zeros(N)
     # v_sim[pos] = rng.uniform(1e3, 1e5, size=n_trades)
     v_sim[pos] = np.clip(
-        1e5 * (1+np.random.exponential(scale=1, size=n_trades)), 
-                         a_min=None, a_max=8e5)
+        1e6 * (0.5+np.random.exponential(scale=1, size=n_trades)), 
+                         a_min=None, a_max=8e6)
     I = np.zeros(N + 1)
     S = np.zeros(N + 1)
     S[0] = 50.0
     dW = rng.normal(0, np.sqrt(tau), size=N)
 
     for k in range(1, N + 1):
-        delta_I = (kappa * v_sim[k] - rho * I[k - 1]) * tau
-        I[k] = I[k - 1] + delta_I  # forward Euler
+        dI = fn_dI(v_sim[k - 1], I[k - 1], kappa, rho, tau)  # v_sim[k-1] is actually n_k
+        I[k] = I[k - 1] + dI  # forward Euler
+        I_k = step(v_sim[k - 1], I[k - 1], kappa, rho, tau)
+        assert I[k] == I_k, f"Mismatch at step {k}: {I[k]} != {I_k}"
         S[k] = (
             S[k - 1]
-            - (gamma * v_sim[k - 1] * tau + delta_I)
+            + fn_dS(gamma, v_sim[k - 1], tau, dI)
             + sigma * dW[k - 1]
         )
 
     return S, v_sim
+
 
 
 def lognormal_params(mu_X, sigma_X):
@@ -63,12 +89,12 @@ def lognormal_params(mu_X, sigma_X):
     Computes the parameters for a log-normal distribution.
 
     Parameters:
-    - mu_X: Mean of the normal distribution.
-    - sigma_X: Standard deviation of the normal distribution.
+    - mu_X: Mean of the lognormal distribution.
+    - sigma_X: Standard deviation of the lognormal distribution.
 
     Returns:
-    - mu_log: Mean in the log-space.
-    - sigma_log: Standard deviation in the log-space.
+    - mu_log: Mean of the underlying normal distribution in log space
+    - sigma_log: Standard deviation of the underlying normal distribution in the log-space.
     """
     sigma_log = np.sqrt(np.log(1 + (sigma_X / mu_X)**2))
     mu_log = np.log(mu_X) - 0.5 * sigma_log**2

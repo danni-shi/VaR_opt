@@ -7,13 +7,13 @@ source /nfs/home/dannis/anaconda3/etc/profile.d/conda.sh
 conda activate myenv
 
 # Set optional arguments
-OUTDIR="TIM_opt_results_20250909_thresh3"
+OUTDIR="TIM_opt_results_20250909_thresh10_n3000"
 MCMC_TIMESTAMP="20250830"
-TRADE_LIST="50 150 400"    # Example trade sizes
+TRADE_LIST="400 1000"    # Example trade sizes
 RUN_SEEDS=$(echo {100..119})
-N_SCENARIOS=1000                # Example number of scenarios
-LOSS_PROB=0.05                  # Example loss probability
-MARGIN=0.02                    # Example margin
+N_SCENARIOS=3000                # Example number of scenarios
+LOSS_PROB=0.1                  # Example loss probability
+MARGIN=0.0                    # Example margin
 mkdir -p $OUTDIR
 
 # Call the Python script with arguments
