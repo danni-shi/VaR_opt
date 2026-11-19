@@ -1,16 +1,35 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
-            "name": "Python Debugger: Current File",
-            "type": "debugpy",
+            "name": "Debug TIM Optimization",
+            "type": "python",
             "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal"
+            "program": "${workspaceFolder}/TIM/optimization.py",
+            "args": [
+                "--outdir", "/nfs/home/dannis/AC-model/TIM_opt_results/20251015_open_and_close",
+                "--mcmc_timestamp", "20251014_open_and_close",
+                "--list_n_trades", "1500", 
+                "--mcmc_labels", "combined",
+                "--true_gamma", "5e-5",
+                "--true_kappa", "5e-5",
+                "--list_sigma", "0.95",
+                "--run_seeds", "100",
+                "--n_scenarios", "1000",
+                "--loss_prob", "0.1",
+                "--margins", "0",
+                "--loss_threshs", "4.5e5",
+                "--Ms", "1e6",
+                "--scales", "100",
+                "--recenter", "False",
+                "--sample_rho", "True"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false
         }
     ]
 }

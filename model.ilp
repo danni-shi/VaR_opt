@@ -1,0 +1,64 @@
+\ Model TIM_MCMC_Opt_copy
+\ LP format - for model browsing. Use MPS format to capture full model detail.
+\ Signature: 0xacf4e54210c37448
+Minimize
+ 
+Subject To
+ TotalShares: action[0] + action[1] + action[2] + action[3] + action[4]
+   + action[5] + action[6] + action[7] + action[8] + action[9] + action[10]
+   = 100000
+ IS_608: - 2.31980142007026 action[0] - 1.854364727000752 action[1]
+   - 1.218800430936196 action[2] - 0.6443568496042904 action[3]
+   - 0.1561629660186742 action[4] - 0.48311630739498 action[5]
+   - 0.4102699147788644 action[6] - 0.2040454304257928 action[7]
+   - 0.0912822056830532 action[8] + 0.1063680989545738 action[9]
+   + 0.3754416617145306 action[10] - 5000 b[608] + [
+   3.68352e-05 action[0] ^2 + 5.89389e-05 action[0] * action[1]
+   + 4.71532e-05 action[0] * action[2] + 3.77242e-05 action[0] * action[3]
+   + 3.01807e-05 action[0] * action[4] + 2.41456e-05 action[0] * action[5]
+   + 1.93173e-05 action[0] * action[6] + 1.54545e-05 action[0] * action[7]
+   + 1.23642e-05 action[0] * action[8] + 9.89175e-06 action[0] * action[9]
+   + 7.91375e-06 action[0] * action[10] + 3.68352e-05 action[1] ^2
+   + 5.89389e-05 action[1] * action[2] + 4.71532e-05 action[1] * action[3]
+   + 3.77242e-05 action[1] * action[4] + 3.01807e-05 action[1] * action[5]
+   + 2.41456e-05 action[1] * action[6] + 1.93173e-05 action[1] * action[7]
+   + 1.54545e-05 action[1] * action[8] + 1.23642e-05 action[1] * action[9]
+   + 9.89175e-06 action[1] * action[10] + 3.68352e-05 action[2] ^2
+   + 5.89389e-05 action[2] * action[3] + 4.71532e-05 action[2] * action[4]
+   + 3.77242e-05 action[2] * action[5] + 3.01807e-05 action[2] * action[6]
+   + 2.41456e-05 action[2] * action[7] + 1.93173e-05 action[2] * action[8]
+   + 1.54545e-05 action[2] * action[9] + 1.23642e-05 action[2] * action[10]
+   + 3.68352e-05 action[3] ^2 + 5.89389e-05 action[3] * action[4]
+   + 4.71532e-05 action[3] * action[5] + 3.77242e-05 action[3] * action[6]
+   + 3.01807e-05 action[3] * action[7] + 2.41456e-05 action[3] * action[8]
+   + 1.93173e-05 action[3] * action[9] + 1.54545e-05 action[3] * action[10]
+   + 3.68352e-05 action[4] ^2 + 5.89389e-05 action[4] * action[5]
+   + 4.71532e-05 action[4] * action[6] + 3.77242e-05 action[4] * action[7]
+   + 3.01807e-05 action[4] * action[8] + 2.41456e-05 action[4] * action[9]
+   + 1.93173e-05 action[4] * action[10] + 3.68352e-05 action[5] ^2
+   + 5.89389e-05 action[5] * action[6] + 4.71532e-05 action[5] * action[7]
+   + 3.77242e-05 action[5] * action[8] + 3.01807e-05 action[5] * action[9]
+   + 2.41456e-05 action[5] * action[10] + 3.68352e-05 action[6] ^2
+   + 5.89389e-05 action[6] * action[7] + 4.71532e-05 action[6] * action[8]
+   + 3.77242e-05 action[6] * action[9] + 3.01807e-05 action[6] * action[10]
+   + 3.68352e-05 action[7] ^2 + 5.89389e-05 action[7] * action[8]
+   + 4.71532e-05 action[7] * action[9] + 3.77242e-05 action[7] * action[10]
+   + 3.68352e-05 action[8] ^2 + 5.89389e-05 action[8] * action[9]
+   + 4.71532e-05 action[8] * action[10] + 3.68352e-05 action[9] ^2
+   + 5.89389e-05 action[9] * action[10] + 3.68352e-05 action[10] ^2 ]
+   <= 36878.89592793013
+Bounds
+ action[0] free
+ action[1] free
+ action[2] free
+ action[3] free
+ action[4] free
+ action[5] free
+ action[6] free
+ action[7] free
+ action[8] free
+ action[9] free
+ action[10] free
+Binaries
+ b[608]
+End
