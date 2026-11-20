@@ -399,7 +399,7 @@ if __name__ == "__main__":
                         "rho": np.array([true_rho] * n_scenarios_to_add)
                     }
                 else:
-                    new_samples = sample_posteriors(n_trades, mcmc_label, mcmc_timestamp, n_scenarios_to_add, scale, args.recenter, true_gamma, true_gamma, true_rho, gap)
+                    new_samples = sample_posteriors(n_trades, mcmc_label, mcmc_timestamp, n_scenarios_to_add, scale, args.recenter, true_gamma, true_kappa, true_rho, gap)
 
                 current_samples = {key: np.concatenate([current_samples[key], 
                                                         new_samples[key]]) \
